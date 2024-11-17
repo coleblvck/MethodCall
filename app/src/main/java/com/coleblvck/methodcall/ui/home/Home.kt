@@ -28,15 +28,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +54,7 @@ import com.coleblvck.methodcall.data.appPackage.App
 import com.coleblvck.methodcall.data.chain.Chain
 import com.coleblvck.methodcall.data.chain.chainToolBox.ChainToolBox
 import com.coleblvck.methodcall.methodType.MethodType
+import com.coleblvck.methodcall.ui.common.composables.AboutDialog
 import com.coleblvck.methodcall.ui.common.composables.ConditionalColorButtonCard
 import com.coleblvck.methodcall.ui.home.chainListColumn.ChainListColumn
 import com.coleblvck.methodcall.ui.home.methodTypeListColumn.MethodTypeListColumn
@@ -101,6 +106,14 @@ fun Home(
         }
     }
 
+    val aboutDialogVisible = remember {
+        mutableStateOf(false)
+    }
+
+    if (aboutDialogVisible.value) {
+        AboutDialog(dismissCallback = { aboutDialogVisible.value = false })
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -108,11 +121,28 @@ fun Home(
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground,
     ) { innerPadding ->
-        Column {
+        Column (
+            modifier = Modifier
+                .padding(innerPadding)
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                IconButton(onClick = { aboutDialogVisible.value = true }) {
+                    Icon(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .size(30.dp)
+                            .padding(8.dp),
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = "About Icon Button",
+                    )
+                }
+            }
             HorizontalPager(
                 state = homePagerState,
                 modifier = Modifier
-                    .padding(innerPadding)
                     .weight(1f)
             ) { page ->
                 when (page) {
