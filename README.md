@@ -21,4 +21,4 @@ Built with Jetpack Compose
 <img alt="Shelf home screen" src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="25%"><img alt="Shelf home screen" src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="25%"><img alt="Shelf home screen" src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="25%"><img alt="Shelf home screen" src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="25%">
 
 ## Feedback/Contributions
-- Welcome
+- Open to suggestions and feedback
