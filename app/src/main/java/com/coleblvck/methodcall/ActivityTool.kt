@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -40,6 +39,7 @@ class ActivityTool(private val activity: ComponentActivity) {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun checkAndRequestPermissions() {
         requestCallScreeningRole()
+        //Runtime.getRuntime().exec("su")
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
