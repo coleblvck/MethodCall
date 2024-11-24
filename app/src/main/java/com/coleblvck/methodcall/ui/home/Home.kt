@@ -154,58 +154,68 @@ fun Home(
                     )
                 }
             }
-            ElevatedCard(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .height(80.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = MaterialTheme.colorScheme.secondary
-                )
+            BottomPagerNav(pagerState = homePagerState, updatePagerState = ::updateHomePagerPage)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun BottomPagerNav(
+    pagerState: PagerState,
+    updatePagerState: (Int) -> Unit,
+) {
+
+    ElevatedCard(
+        modifier = Modifier
+            .padding(12.dp)
+            .height(80.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.secondary
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            ConditionalColorButtonCard(
+                modifier = Modifier.weight(1f),
+                selectionColorCondition = pagerState.currentPage == 0,
+                clickAction = { updatePagerState(0) }
             ) {
-                Row(
-                    modifier = Modifier.padding(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                Box(
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    ConditionalColorButtonCard(
-                        modifier = Modifier.weight(1f),
-                        selectionColorCondition = homePagerState.currentPage == 0,
-                        clickAction = { updateHomePagerPage(0) }
-                    ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .aspectRatio(1f)
-                                    .size(30.dp)
-                                    .padding(8.dp)
-                                    .align(Alignment.Center),
-                                imageVector = Icons.Filled.Home,
-                                contentDescription = "Home Button Icon",
-                            )
-                        }
-                    }
-                    ConditionalColorButtonCard(
-                        modifier = Modifier.weight(1f),
-                        selectionColorCondition = homePagerState.currentPage == 1,
-                        clickAction = { updateHomePagerPage(1) }
-                    ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .aspectRatio(1f)
-                                    .size(30.dp)
-                                    .padding(8.dp)
-                                    .align(Alignment.Center),
-                                imageVector = Icons.AutoMirrored.Filled.List,
-                                contentDescription = "Method Chain List Button Icon",
-                            )
-                        }
-                    }
+                    Icon(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .size(30.dp)
+                            .padding(8.dp)
+                            .align(Alignment.Center),
+                        imageVector = Icons.Filled.Home,
+                        contentDescription = "Home Button Icon",
+                    )
+                }
+            }
+            ConditionalColorButtonCard(
+                modifier = Modifier.weight(1f),
+                selectionColorCondition = pagerState.currentPage == 1,
+                clickAction = { updatePagerState(1) }
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .size(30.dp)
+                            .padding(8.dp)
+                            .align(Alignment.Center),
+                        imageVector = Icons.AutoMirrored.Filled.List,
+                        contentDescription = "Method Chain List Button Icon",
+                    )
                 }
             }
         }
