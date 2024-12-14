@@ -3,7 +3,6 @@ package com.coleblvck.methodcall.ui.home
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -32,8 +31,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,25 +43,22 @@ import com.coleblvck.methodcall.data.appPackage.App
 import com.coleblvck.methodcall.data.chain.Chain
 import com.coleblvck.methodcall.data.chain.chainToolBox.ChainToolBox
 import com.coleblvck.methodcall.methodType.MethodType
-import com.coleblvck.methodcall.state.MethodCallViewModel
-import com.coleblvck.methodcall.ui.common.composables.AboutDialog
 import com.coleblvck.methodcall.ui.common.composables.ConditionalColorButtonCard
 import com.coleblvck.methodcall.ui.home.chainListColumn.ChainListColumn
 import com.coleblvck.methodcall.ui.home.methodTypeListColumn.MethodTypeListColumn
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     chainToolBox :ChainToolBox,
     liveChains :LiveData<List<Chain>>,
     apps :State<List<App>>,
     getChainItemParameterName :(methodType: MethodType, parameter: String) -> String,
+    homePagerState: PagerState = rememberPagerState(initialPage = 0, pageCount = { 2 }),
     navigateToSettings :() -> Unit
 ) {
 
-    val homePagerState: PagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
 
     //
 
@@ -104,14 +98,6 @@ fun HomeScreen(
         }
     }
 
-    val aboutDialogVisible = remember {
-        mutableStateOf(false)
-    }
-
-    if (aboutDialogVisible.value) {
-        AboutDialog(dismissCallback = { aboutDialogVisible.value = false })
-    }
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -127,14 +113,14 @@ fun HomeScreen(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                IconButton(onClick = { aboutDialogVisible.value = true }) {
+                IconButton(onClick = { navigateToSettings() }) {
                     Icon(
                         modifier = Modifier
                             .aspectRatio(1f)
                             .size(30.dp)
                             .padding(8.dp),
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "About Icon Button",
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = "Settings Page Button",
                     )
                 }
             }
@@ -157,7 +143,7 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun BottomPagerNav(
     pagerState: PagerState,
