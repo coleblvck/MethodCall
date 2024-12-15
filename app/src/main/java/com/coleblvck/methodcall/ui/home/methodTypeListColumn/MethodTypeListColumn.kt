@@ -1,9 +1,11 @@
 package com.coleblvck.methodcall.ui.home.methodTypeListColumn
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.coleblvck.methodcall.data.appPackage.App
 import com.coleblvck.methodcall.data.chain.chainToolBox.ChainToolBox
 import com.coleblvck.methodcall.methodType.MethodType
@@ -17,7 +19,9 @@ fun MethodTypeListColumn(
     superuserIsEnabled: State<Boolean>
 ) {
     ColumnWithHeading(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 12.dp),
         headingText = "Actions",
         subHeadingText = "Select an action to start a new chain."
     ) {

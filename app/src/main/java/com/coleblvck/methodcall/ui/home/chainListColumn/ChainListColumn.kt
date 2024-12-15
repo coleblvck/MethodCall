@@ -1,12 +1,14 @@
 package com.coleblvck.methodcall.ui.home.chainListColumn
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -34,7 +36,7 @@ fun ChainListColumn(
     }
 
     ColumnWithHeading(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
         headingText = "Chains",
         subHeadingText = if (chains.value.isEmpty()) {
             "You have no existing chain."
