@@ -7,12 +7,14 @@ import androidx.compose.ui.Modifier
 import com.coleblvck.methodcall.data.appPackage.App
 import com.coleblvck.methodcall.data.chain.chainToolBox.ChainToolBox
 import com.coleblvck.methodcall.methodType.MethodType
+import com.coleblvck.methodcall.methodType.categories.superuserMethods
 import com.coleblvck.methodcall.ui.common.composables.ColumnWithHeading
 
 @Composable
 fun MethodTypeListColumn(
     chainToolBox: ChainToolBox,
     apps: State<List<App>>,
+    superuserIsEnabled: State<Boolean>
 ) {
     ColumnWithHeading(
         modifier = Modifier.fillMaxSize(),
@@ -20,11 +22,21 @@ fun MethodTypeListColumn(
         subHeadingText = "Select an action to start a new chain."
     ) {
         for (methodType in MethodType.entries) {
-            MethodTypeListItemCard(
-                chainToolBox = chainToolBox,
-                methodType = methodType,
-                apps = apps
-            )
+            if (!superuserMethods.contains(methodType)) {
+                MethodTypeListItemCard(
+                    chainToolBox = chainToolBox,
+                    methodType = methodType,
+                    apps = apps
+                )
+            } else {
+                if (superuserIsEnabled.value) {
+                    MethodTypeListItemCard(
+                        chainToolBox = chainToolBox,
+                        methodType = methodType,
+                        apps = apps
+                    )
+                }
+            }
         }
     }
 }

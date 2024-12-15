@@ -27,6 +27,7 @@ fun NavSystem(methodCallViewModel: MethodCallViewModel) {
                 apps = methodCallViewModel.appState.apps,
                 getChainItemParameterName = methodCallViewModel.getChainItemParameterName,
                 navigateToSettings = { navController.navigate(route = Settings) },
+                superuserIsEnabled = methodCallViewModel.userPreferencesToolBox.userPreferences.superuserEnabled
             )
         }
         composable<Settings> {

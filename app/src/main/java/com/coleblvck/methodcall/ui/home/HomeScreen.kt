@@ -51,12 +51,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    chainToolBox :ChainToolBox,
-    liveChains :LiveData<List<Chain>>,
-    apps :State<List<App>>,
-    getChainItemParameterName :(methodType: MethodType, parameter: String) -> String,
+    chainToolBox: ChainToolBox,
+    liveChains: LiveData<List<Chain>>,
+    apps: State<List<App>>,
+    getChainItemParameterName: (methodType: MethodType, parameter: String) -> String,
+    superuserIsEnabled: State<Boolean>,
     homePagerState: PagerState = rememberPagerState(initialPage = 0, pageCount = { 2 }),
-    navigateToSettings :() -> Unit
+    navigateToSettings: () -> Unit
 ) {
 
 
@@ -105,7 +106,7 @@ fun HomeScreen(
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground,
     ) { innerPadding ->
-        Column (
+        Column(
             modifier = Modifier
                 .padding(innerPadding)
         ) {
@@ -130,7 +131,12 @@ fun HomeScreen(
                     .weight(1f)
             ) { page ->
                 when (page) {
-                    0 -> MethodTypeListColumn(chainToolBox = chainToolBox, apps = apps)
+                    0 -> MethodTypeListColumn(
+                        chainToolBox = chainToolBox,
+                        apps = apps,
+                        superuserIsEnabled = superuserIsEnabled
+                    )
+
                     1 -> ChainListColumn(
                         chainToolBox = chainToolBox,
                         liveChains = liveChains,

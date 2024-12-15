@@ -39,6 +39,8 @@ class RunnerHandler {
                 }
 
                 MethodType.TOGGLE_TORCH -> MethodType.TOGGLE_TORCH.execute(listOf(context))
+                MethodType.SHUTDOWN -> MethodType.SHUTDOWN.execute(listOf())
+                MethodType.REBOOT -> MethodType.REBOOT.execute(listOf())
             }
         }
     }

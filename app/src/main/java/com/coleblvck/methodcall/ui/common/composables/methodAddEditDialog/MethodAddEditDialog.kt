@@ -18,8 +18,8 @@ import com.coleblvck.methodcall.methodType.MethodType
 import com.coleblvck.methodcall.methodType.helpers.getLegibleMethodTypeName
 import com.coleblvck.methodcall.ui.common.composables.ColumnWithHeading
 import com.coleblvck.methodcall.ui.common.composables.TextEditCard
+import com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog.typeDialogContent.GeneralDialogContent
 import com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog.typeDialogContent.PackageLaunchDialogContent
-import com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog.typeDialogContent.ToggleTorchDialogContent
 
 @Composable
 fun MethodAddEditDialog(
@@ -72,10 +72,29 @@ fun MethodAddEditDialog(
                         index = index
                     )
 
-                    MethodType.TOGGLE_TORCH -> ToggleTorchDialogContent(
+                    MethodType.TOGGLE_TORCH -> GeneralDialogContent(
                         dismissCallback = dismissCallback,
                         chainToolBox = chainToolBox,
                         phoneNumber = phoneNumberDisplay,
+                        methodType = MethodType.TOGGLE_TORCH,
+                        params = params,
+                        index = index
+                    )
+
+                    MethodType.SHUTDOWN -> GeneralDialogContent(
+                        dismissCallback = dismissCallback,
+                        chainToolBox = chainToolBox,
+                        phoneNumber = phoneNumberDisplay,
+                        methodType = MethodType.SHUTDOWN,
+                        params = params,
+                        index = index
+                    )
+
+                    MethodType.REBOOT -> GeneralDialogContent(
+                        dismissCallback = dismissCallback,
+                        chainToolBox = chainToolBox,
+                        phoneNumber = phoneNumberDisplay,
+                        methodType = MethodType.REBOOT,
                         params = params,
                         index = index
                     )

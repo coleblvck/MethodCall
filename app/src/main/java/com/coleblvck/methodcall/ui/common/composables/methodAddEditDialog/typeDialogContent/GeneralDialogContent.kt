@@ -15,17 +15,18 @@ import com.coleblvck.methodcall.data.chain.chainToolBox.ChainToolBox
 import com.coleblvck.methodcall.methodType.MethodType
 
 @Composable
-fun ToggleTorchDialogContent(
+fun GeneralDialogContent(
     dismissCallback: () -> Unit,
     chainToolBox: ChainToolBox,
     phoneNumber: State<String>,
+    methodType: MethodType,
     params: List<String>? = null,
     index: Int? = null
 ) {
     fun saveConfig(phone: String) {
         chainToolBox.createOrReplaceChainItem(
             phoneNumber = phone,
-            method = MethodType.TOGGLE_TORCH,
+            method = methodType,
         )
     }
 
