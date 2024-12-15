@@ -16,6 +16,8 @@ Built with Jetpack Compose
 ## Actions
 - Launch an app
 - Toggle flashlight
+- Shutdown
+- Reboot
 
 ## Screenshots
 <img alt="Method Call Screenshots" src="metadata/images/singleScreenshotImage.png" width="100%">

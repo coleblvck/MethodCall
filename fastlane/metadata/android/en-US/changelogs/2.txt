@@ -1,0 +1,4 @@
+- Added Superuser request
+- Added Shutdown and reboot actions
+- Added contacts permission for trigger to work with saved contacts
+- Other slight tweaks
