@@ -1,5 +1,6 @@
 package com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -18,8 +20,8 @@ import com.coleblvck.methodcall.methodType.MethodType
 import com.coleblvck.methodcall.methodType.helpers.getLegibleMethodTypeName
 import com.coleblvck.methodcall.ui.common.composables.ColumnWithHeading
 import com.coleblvck.methodcall.ui.common.composables.TextEditCard
+import com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog.typeDialogContent.GeneralDialogContent
 import com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog.typeDialogContent.PackageLaunchDialogContent
-import com.coleblvck.methodcall.ui.common.composables.methodAddEditDialog.typeDialogContent.ToggleTorchDialogContent
 
 @Composable
 fun MethodAddEditDialog(
@@ -46,6 +48,8 @@ fun MethodAddEditDialog(
                 phoneNumberDisplay.value = it
             }
             ColumnWithHeading(
+                modifier = Modifier
+                    .padding(12.dp),
                 topSpace = 40.dp,
                 headingText = getLegibleMethodTypeName(methodType),
                 subHeadingText = "Enter a Phone Number to start or continue a chain with this action." +
@@ -72,10 +76,29 @@ fun MethodAddEditDialog(
                         index = index
                     )
 
-                    MethodType.TOGGLE_TORCH -> ToggleTorchDialogContent(
+                    MethodType.TOGGLE_TORCH -> GeneralDialogContent(
                         dismissCallback = dismissCallback,
                         chainToolBox = chainToolBox,
                         phoneNumber = phoneNumberDisplay,
+                        methodType = MethodType.TOGGLE_TORCH,
+                        params = params,
+                        index = index
+                    )
+
+                    MethodType.SHUTDOWN -> GeneralDialogContent(
+                        dismissCallback = dismissCallback,
+                        chainToolBox = chainToolBox,
+                        phoneNumber = phoneNumberDisplay,
+                        methodType = MethodType.SHUTDOWN,
+                        params = params,
+                        index = index
+                    )
+
+                    MethodType.REBOOT -> GeneralDialogContent(
+                        dismissCallback = dismissCallback,
+                        chainToolBox = chainToolBox,
+                        phoneNumber = phoneNumberDisplay,
+                        methodType = MethodType.REBOOT,
                         params = params,
                         index = index
                     )

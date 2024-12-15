@@ -47,8 +47,7 @@ fun MethodTypeListItemCard(
     }
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .height(80.dp),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary
@@ -58,10 +57,10 @@ fun MethodTypeListItemCard(
         Text(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                .padding(20.dp)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             text = getLegibleMethodTypeName(methodType),
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Left,
             fontSize = 32.sp,
             fontWeight = FontWeight(500)
         )
