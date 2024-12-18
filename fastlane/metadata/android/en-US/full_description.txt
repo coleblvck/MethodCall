@@ -1,8 +1,12 @@
 Method Call is an Android automation application that works specifically by mapping phone numbers to a defined list of actions.
 
 Features
+
 - Persistent i.e.: application can be killed or phone restarted and would not stop your automations.
 
 Actions
+
 - Launch an app
 - Toggle flashlight
+- Shutdown
+- Restart
