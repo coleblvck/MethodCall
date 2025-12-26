@@ -18,6 +18,18 @@ Built with Jetpack Compose
 - Toggle flashlight
 - Shutdown
 - Reboot
+- Send sms
+- Set ringer mode
+- Set screen brightness
+- Toggle airplane mode
+- Open Url
+- Play notification sound
+- Toggle mobile data
+- Launch activity with actionù
+- Set volume
+- Take screenshot
+- Toggle auto rotate
+- Toggle nfc
 
 ## Screenshots
 <img alt="Method Call Screenshots" src="metadata/images/singleScreenshotImage.png" width="100%">

@@ -30,6 +30,10 @@ class MethodCallActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Pass permission manager to ViewModel
+        methodCallViewModel.setPermissionManager(activityTool.permissionManager)
+
         activityTool.commenceBusiness()
         enableEdgeToEdge(SystemBarStyle.dark(Color.BLACK))
         setContent {
@@ -39,4 +43,3 @@ class MethodCallActivity : ComponentActivity() {
         }
     }
 }
-

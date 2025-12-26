@@ -1,42 +1,26 @@
 package com.coleblvck.methodcall.ui.home.chainListColumn
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.coleblvck.methodcall.methodType.MethodType
-
+import com.coleblvck.methodcall.methodType.helpers.getLegibleMethodTypeName
 
 @Composable
 fun ChainCard(
@@ -47,102 +31,115 @@ fun ChainCard(
     deleteChain: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
-    val expansionIconRotationState by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f, label = "Expansion Icon Animation"
+    var isExpanded by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        animationSpec = tween(300),
+        label = "rotation"
     )
+
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(),
+            .padding(horizontal = 24.dp, vertical = 6.dp)
+            .animateContentSize(animationSpec = tween(300)),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondary
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            // Header
             Row(
-                modifier = Modifier
-                    .fillMaxWidth().height(IntrinsicSize.Min),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                ElevatedCard(
+                Row(
                     modifier = Modifier
-                        .clickable { isExpanded = !isExpanded }
-                        .weight(1f),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.onBackground
-                    )
+                        .weight(1f)
+                        .clickable { isExpanded = !isExpanded },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .rotate(rotationState),
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Expand"
+                    )
+
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            modifier = Modifier
-                                .weight(1f)
-                                .wrapContentHeight(align = Alignment.CenterVertically),
-                            text = if (phoneNumber != "") {
-                                phoneNumber
-                            } else {
-                                "All Numbers"
-                            },
-                            textAlign = TextAlign.Left,
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight(500)
+                            text = if (phoneNumber.isNotEmpty()) phoneNumber else "All Numbers",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold
                         )
-                        Icon(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .rotate(expansionIconRotationState),
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "$phoneNumber Chain Drop-Down Arrow"
+                        Text(
+                            text = "${chain.size} action${if (chain.size != 1) "s" else ""}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                         )
                     }
                 }
-                ElevatedCard(
-                    modifier = Modifier,
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary,
-                        contentColor = MaterialTheme.colorScheme.onTertiary
-                    )
+
+                IconButton(
+                    onClick = { deleteChain(phoneNumber) },
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
-                        modifier = Modifier.aspectRatio(1f)
-                            .clickable { deleteChain(phoneNumber) }
-                            .size(30.dp).padding(8.dp),
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "$phoneNumber Chain Deletion Icon",
+                        contentDescription = "Delete chain",
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.error
                     )
                 }
             }
-            if (isExpanded) {
-                chain.forEachIndexed { itemIndex, chainItem ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(40.dp),
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Arrow Down Icon"
-                        )
-                    }
-                    ChainItemCard(
-                        phoneNumber = phoneNumber,
-                        chainItem = chainItem,
-                        itemIndex = itemIndex,
-                        getChainItemParameterName = getChainItemParameterName,
-                        removeChainItem = removeChainItem
+
+            // Expanded content
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Divider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
                     )
+
+                    chain.forEachIndexed { index, item ->
+                        ChainItemCard(
+                            phoneNumber = phoneNumber,
+                            chainItem = item,
+                            itemIndex = index,
+                            getChainItemParameterName = getChainItemParameterName,
+                            removeChainItem = removeChainItem
+                        )
+
+                        if (index < chain.lastIndex) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Surface(
+                                    modifier = Modifier.size(6.dp),
+                                    shape = CircleShape,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
+                                ) {}
+                            }
+                        }
+                    }
                 }
             }
         }

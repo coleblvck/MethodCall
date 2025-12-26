@@ -1,10 +1,6 @@
 package com.coleblvck.methodcall.state
 
 import android.content.pm.PackageManager
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
@@ -16,17 +12,27 @@ import com.coleblvck.methodcall.data.chain.chainToolBox.ChainToolBox
 import com.coleblvck.methodcall.data.repositories.ChainRepository
 import com.coleblvck.methodcall.data.userPreferences.UserPreferencesToolBox
 import com.coleblvck.methodcall.methodType.MethodType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.coleblvck.methodcall.permissions.PermissionManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 class MethodCallViewModel(chainRepository: ChainRepository, packageManager: PackageManager, store: DataStore<Preferences>) :
     ViewModel() {
+
+
     val chainToolBox = ChainToolBox(chainRepository)
     val appState = AppState(packageManager)
     val liveChains = chainRepository.getChains()
+
+    private val _permissionManager = MutableStateFlow<PermissionManager?>(null)
+    val permissionManager: StateFlow<PermissionManager?> = _permissionManager.asStateFlow()
+
+    fun setPermissionManager(manager: PermissionManager) {
+        _permissionManager.value = manager
+    }
 
 
     val getChainItemParameterName: (methodType: MethodType, parameter: String) -> String =

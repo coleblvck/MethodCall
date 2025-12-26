@@ -43,7 +43,7 @@ fun ColumnWithHeading(
                 state = scrollState,
                 enabled = scrollEnabled
             ),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (headingText != null) {
             Spacer(

@@ -14,9 +14,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.coleblvck.methodcall.permissions.PermissionManager
 import com.coleblvck.methodcall.services.ScreeningService
 
 class ActivityTool(private val activity: ComponentActivity) {
+    val permissionManager = PermissionManager(activity)
+
     private var generalLauncher: ActivityResultLauncher<Intent> =
         activity.registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -29,8 +32,7 @@ class ActivityTool(private val activity: ComponentActivity) {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun commenceBusiness() {
-        checkAndRequestPermissions()
-        //startScreeningService()
+        checkAndRequestEssentialPermissions()
     }
 
     private fun startScreeningService() {
@@ -39,10 +41,10 @@ class ActivityTool(private val activity: ComponentActivity) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun checkAndRequestPermissions() {
+    private fun checkAndRequestEssentialPermissions() {
+        // Only request essential permissions at startup
         requestCallScreeningRole()
         requestReadContactsPermission()
-        //Runtime.getRuntime().exec("su")
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -52,21 +54,11 @@ class ActivityTool(private val activity: ComponentActivity) {
         generalLauncher.launch(intent)
     }
 
-    private fun overlayPermissionGranted(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            activity.applicationContext,
-            ACTION_MANAGE_OVERLAY_PERMISSION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestOverlayPermission() {
-        val intent = Intent(ACTION_MANAGE_OVERLAY_PERMISSION)
-        generalLauncher.launch(intent)
-    }
-
     private fun requestReadContactsPermission() {
-        ActivityCompat.requestPermissions(activity,
+        ActivityCompat.requestPermissions(
+            activity,
             arrayOf(Manifest.permission.READ_CONTACTS),
-            100);
+            100
+        )
     }
 }

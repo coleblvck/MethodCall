@@ -1,24 +1,17 @@
 package com.coleblvck.methodcall.ui.common.composables
 
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,21 +25,22 @@ import com.coleblvck.methodcall.data.appPackage.App
 fun AppRow(
     apps: List<App>,
     clickCallback: (App) -> Unit = {},
-    rowHeight: Dp = 80.dp
+    rowHeight: Dp = 96.dp
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(rowHeight)
-            .horizontalScroll(
-                state = rememberScrollState()
-            ),
+            .horizontalScroll(rememberScrollState())
+            .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        apps.forEach {
-            AppCard(app = it, clickCallback = clickCallback)
+        Spacer(modifier = Modifier.width(12.dp))
+        apps.forEach { app ->
+            AppCard(app = app, clickCallback = clickCallback)
         }
+        Spacer(modifier = Modifier.width(12.dp))
     }
 }
 
@@ -56,42 +50,74 @@ fun AppCard(
     clickCallback: (App) -> Unit = {},
     iconOnly: Boolean = false,
     textOnly: Boolean = false,
-    colors: CardColors = CardDefaults.elevatedCardColors(
-        MaterialTheme.colorScheme.tertiary,
-        MaterialTheme.colorScheme.onTertiary
+    colors: CardColors = CardDefaults.cardColors(
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
     )
 ) {
-    ElevatedCard(
+    var isPressed by remember { mutableStateOf(false) }
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.92f else 1f,
+        animationSpec = tween(150),
+        label = "scale"
+    )
+
+    Card(
+        onClick = {
+            isPressed = true
+            clickCallback(app)
+            isPressed = false
+        },
         modifier = Modifier
+            .width(80.dp)
             .aspectRatio(1f)
-            .clickable {
-                clickCallback(app)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
             },
-        colors = colors
+        colors = colors,
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp,
+            pressedElevation = 6.dp
+        )
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(8.dp)
                 .fillMaxSize()
+                .padding(4.dp)
         ) {
-            if (!textOnly || iconOnly)
-                AsyncImage(
+            if (!textOnly || iconOnly) {
+                Surface(
                     modifier = Modifier
-                        .weight(1f),
-                    model = app.icon,
-                    contentDescription = "${app.name} icon"
-                )
-            if (!iconOnly || textOnly)
+                        .size(40.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surface
+                ) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(6.dp),
+                        model = app.icon,
+                        contentDescription = "${app.name} icon"
+                    )
+                }
+            }
+
+            if (!iconOnly || textOnly) {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = app.name,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Medium,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    lineHeight = 12.sp
                 )
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ Method Call is an Android automation application that works specifically by mapp
 
 Features
 
-- Persistent i.e.: application can be killed or phone restarted and would not stop your automations.
+- Persistent i.e.: application can be killed or phone restarted and would not interfere with automations.
 
 Actions
 
@@ -10,3 +10,15 @@ Actions
 - Toggle flashlight
 - Shutdown
 - Restart
+- Send sms
+- Set ringer mode
+- Set screen brightness
+- Toggle airplane mode
+- Open Url
+- Play notification sound
+- Toggle mobile data
+- Launch activity with action
+- Set volume
+- Take screenshot
+- Toggle auto rotate
+- Toggle nfc
